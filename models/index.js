@@ -24,6 +24,9 @@ Object.keys(db).forEach(function(modelName) {
 })
 
 // db.post.hasMany(..)
+// looking inside, so it's not plural
+db.post.hasMany(db.author);
+
 
 module.exports = lodash.extend({
   sequelize: sequelize,
