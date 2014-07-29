@@ -23,9 +23,10 @@ Object.keys(db).forEach(function(modelName) {
   }
 })
 
-// db.post.hasMany(..)
-// looking inside, so it's not plural
-db.post.hasMany(db.author);
+
+// SET UP THE ASSOCIATIONS
+// db.author.hasMany(db.post);
+db.post.belongsTo(db.author);
 
 
 module.exports = lodash.extend({

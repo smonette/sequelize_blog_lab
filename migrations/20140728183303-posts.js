@@ -12,11 +12,16 @@ module.exports = {
         }, 
         authorId: {
           type: DataTypes.INTEGER,
-          foriegnKey: true
+          foreignKey: true
         },
+        // created and updated are REQUIRED
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE,
         writtenOn: DataTypes.DATE,
-        postTitle: DataTypes.STRING,
-        postContent: DataTypes.STRING
+        // STRING defaults to varchar(255)
+        title: DataTypes.STRING,
+        // For large posts we need more space
+        body: DataTypes.TEXT
 
       }).complete(done)
   },

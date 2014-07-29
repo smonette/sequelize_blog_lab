@@ -10,7 +10,11 @@ module.exports = {
           primaryKey: true,
           autoIncrement: true
         }, 
-        authorName: DataTypes.STRING
+        // created and updated are REQUIRED
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE,
+        firstname: DataTypes.STRING,
+        lastname: DataTypes.STRING
 
       }).complete(done)
   },
