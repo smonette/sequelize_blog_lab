@@ -23,6 +23,8 @@ Object.keys(db).forEach(function(modelName) {
   }
 })
 
+// db.post.hasMany(..)
+
 module.exports = lodash.extend({
   sequelize: sequelize,
   Sequelize: Sequelize
