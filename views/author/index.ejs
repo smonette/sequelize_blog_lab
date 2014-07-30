@@ -1,0 +1,15 @@
+<%= include ../myHeader.ejs %>
+
+  <h2>All Authors</h2>
+  <ul>
+  <% authors.forEach(function(author){ %>
+      <li>
+        <a href="/authors/<%= author.dataValues.id %>">
+         <%= author.dataValues.firstname%> <%= author.dataValues.lastname %>
+      </a>
+    </li>
+    <% }) %>
+  </ul> 
+
+
+<%= include ../myFooter.ejs %>

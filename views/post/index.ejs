@@ -1,0 +1,10 @@
+<%= include ../myHeader.ejs %>
+
+      <h2>All Posts</h2>
+      <ul>
+      <% posts.forEach(function(post){ %>
+          <li><h3><a href="/posts/<%= post.dataValues.id %>"><%= post.dataValues.title%></a></h3> <p><%= post.dataValues.body%></p></li>
+        <% }) %>
+      </ul> 
+
+<%= include ../myFooter.ejs %>

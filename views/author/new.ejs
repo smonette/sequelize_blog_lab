@@ -1,0 +1,11 @@
+<%= include ../myHeader.ejs %>
+
+    <h2>Create New Post</h2>
+    <form method="POST" action="/authors/<%= author.dataValues.id %>/new">
+      <input type="hidden" name="post[authorId]" value="<%= author.dataValues.id %>"><br>
+      <input type="text" name="post[title]" placeholder ="Post Title"><br>
+      <textarea type="text" name="post[body]" placeholder ="Post Content"></textarea><br>
+      <button>Add New Post &raquo;</button>
+    </form>
+
+<%= include ../myFooter.ejs %>

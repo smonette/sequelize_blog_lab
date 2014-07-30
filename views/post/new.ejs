@@ -1,0 +1,18 @@
+<%= include ../myHeader.ejs %>
+
+  <h2>Create New Post</h2>
+
+<form role="form" method="POST" action="/authors/<%= author.dataValues.id %>/new">
+  <input type="hidden" name="post[authorId]" value="<%= author.dataValues.id %>"><br>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Post Title</label>
+    <input class="form-control" type="text" name="post[title]" placeholder ="Post Title">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Post Body</label>
+    <textarea type="text" name="post[body]" placeholder ="Post Content" class="form-control"> </textarea>
+  </div>
+  <button type="submit" class="btn btn-default">Add New Post</button>
+</form>
+
+<%= include ../myFooter.ejs %>
