@@ -10,10 +10,20 @@ app.use(express.static(__dirname + '/public'));
 
 app.get("/", function(req, res){
   db.post.findAll().success(function(posts) {
-      res.render('post/index', {posts: posts});
+      res.render('site/index');
+  })
+});
+app.get("/about", function(req, res){
+  db.post.findAll().success(function(posts) {
+      res.render('site/about');
   })
 });
 
+app.get("/contact", function(req, res){
+  db.post.findAll().success(function(posts) {
+      res.render('site/contact');
+  })
+});
 
 app.get("/posts", function(req, res){
   db.post.findAll().success(function(posts) {
