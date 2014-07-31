@@ -28,10 +28,10 @@ app.post('/signup', function(req,res){
   // have to call my create new user functions
   db.user.createNewUser(req.body.username, req.body.password,
     function(err){
-      res.render("site/signup", { message: err.message, username:req.body.username})
+      res.render("signup", { message: err.message, username:req.body.username})
     },
     function(success){
-      res.redirect('site/login', {message: success.message});
+      res.render('index', {message: success.message});
     });
   //need to do some error checking with a message
   // should render index with a success message if this all worked
@@ -44,10 +44,13 @@ app.get("/login", function(req, res){
 app.post('/login', function(req,res){
     db.user.authorize(req.body.username, req.body.password, 
     function(err){
-      res.render("site/login", {username: req.body.username});
+      res.render("login", {username: req.body.username});
     }, 
     function(success){
-      res.redirect("author/dashboard/"+ author.dataValues.id);
+      res.render("dash", {
+          username: req.body.username, 
+          id:db.author.find(id) 
+      });
     });
  });
 
@@ -83,22 +86,18 @@ app.get("/authors/:id", function(req,res){
   })
 });
 
-// app.get("/authors/dashboard/", function(req,res){
-//   var id = req.params.id;
-//   db.author.find(id)
-//   .success(function(foundAuthor){
-//     foundAuthor.getPosts()
-//     .success(function(foundPosts){
-//       res.redirect("authors/dashboard/:id", {
-//         author: foundAuthor,
-//         posts: foundPosts 
-//       })
-//     })
-//   })
-// });
-
-app.get("/authors/dashboard/", function(req,res){
-  res.redirect("author/dashboard/"+ author.dataValues.id);
+app.get("/authors/dashboard/:id", function(req,res){
+  var id = req.params.id;
+  db.author.find(id)
+  .success(function(foundAuthor){
+    foundAuthor.getPosts()
+    .success(function(foundPosts){
+      res.render("author/dash", {
+        author: foundAuthor,
+        posts: foundPosts 
+      })
+    })
+  })
 });
 
 
@@ -115,6 +114,9 @@ app.get('/authors/:id/new', function(req, res){
 app.post('/authors/:id/new', function(req, res){
   var id = req.params.id;
   db.author.find(id).success(function(foundAuthor){
+    // create the post
+    console.log(foundAuthor)
+    console.log(req.body.post);
 
     db.post.create(req.body.post)
     .success(function(newPost){
