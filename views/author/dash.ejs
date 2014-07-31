@@ -1,0 +1,12 @@
+<%= include ../myHeader.ejs %>
+
+<h2><small>All Articles Your Articles</h2>
+ <ul>
+    <% posts.forEach(function(post){ %>
+      <li>&raquo; <a href="/posts/<%= post.dataValues.id %>" ><%= post.dataValues.title %></a></li>
+    <% }) %>
+</ul>
+
+ <a href="/new" class="btn btn-default">Add A New Article</a>
+
+<%= include ../myFooter.ejs %>

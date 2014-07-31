@@ -9,8 +9,8 @@ app.use(bodyParser.urlencoded({extended: true}) );
 app.use(express.static(__dirname + '/public'));
 
 app.get("/", function(req, res){
-  db.post.findAll().success(function(posts) {
-      res.render('site/index');
+    db.post.findAll().success(function(posts) {
+      res.render('site/index', {posts: posts});
   })
 });
 app.get("/about", function(req, res){
@@ -19,11 +19,37 @@ app.get("/about", function(req, res){
   })
 });
 
-app.get("/contact", function(req, res){
-  db.post.findAll().success(function(posts) {
-      res.render('site/contact');
-  })
+app.get("/signup", function(req, res){
+      res.render('site/signup');
 });
+
+
+app.post('/signup', function(req,res){
+  // have to call my create new user functions
+  db.user.createNewUser(req.body.username, req.body.password,
+    function(err){
+      res.render("site/signup", { message: err.message, username:req.body.username})
+    },
+    function(success){
+      res.redirect('site/login', {message: success.message});
+    });
+  //need to do some error checking with a message
+  // should render index with a success message if this all worked
+
+});
+app.get("/login", function(req, res){
+      res.render('site/login');
+});
+
+app.post('/login', function(req,res){
+    db.user.authorize(req.body.username, req.body.password, 
+    function(err){
+      res.render("site/login", {username: req.body.username});
+    }, 
+    function(success){
+      res.redirect("author/dashboard/"+ author.dataValues.id);
+    });
+ });
 
 app.get("/posts", function(req, res){
   db.post.findAll().success(function(posts) {
@@ -36,11 +62,6 @@ app.get("/authors", function(req, res){
       res.render('author/index', {authors: authors});
   })
 });
-
-app.get("/posts/new", function(req, res){
-  res.render("post/new");
-});
-
 
 app.get("/posts/:id", function(req,res){
   db.post.find(req.params.id).success(function(post) {
@@ -62,11 +83,30 @@ app.get("/authors/:id", function(req,res){
   })
 });
 
+// app.get("/authors/dashboard/", function(req,res){
+//   var id = req.params.id;
+//   db.author.find(id)
+//   .success(function(foundAuthor){
+//     foundAuthor.getPosts()
+//     .success(function(foundPosts){
+//       res.redirect("authors/dashboard/:id", {
+//         author: foundAuthor,
+//         posts: foundPosts 
+//       })
+//     })
+//   })
+// });
+
+app.get("/authors/dashboard/", function(req,res){
+  res.redirect("author/dashboard/"+ author.dataValues.id);
+});
+
+
 app.get('/authors/:id/new', function(req, res){
   var id = req.params.id;
   db.author.find(id)
   .success(function(foundAuthor){
-    res.render("post/new", {
+    res.render("author/new", {
       author: foundAuthor
     });
   });
@@ -75,9 +115,6 @@ app.get('/authors/:id/new', function(req, res){
 app.post('/authors/:id/new', function(req, res){
   var id = req.params.id;
   db.author.find(id).success(function(foundAuthor){
-    // create the post
-    console.log(foundAuthor)
-    console.log(req.body.post);
 
     db.post.create(req.body.post)
     .success(function(newPost){
