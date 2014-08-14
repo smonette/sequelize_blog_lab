@@ -37,6 +37,51 @@ app.post('/signup', function(req,res){
   // should render index with a success message if this all worked
 
 });
+
+
+
+
+
+// from solution
+// SIGNUP FORM
+app.get("/signup", function (req, res) {
+  res.render("users/signup", {username: ""});
+});
+
+// CREATE USER
+app.post('/users', function (req, res) {  
+  var newUser = req.body.user;
+  var handleError = function(error){
+    res.render("users/signup", {
+      username: newUser.username,
+      message: error.message
+    });
+  }
+  var handleSuccess = function(currentUser, success){
+    currentUser.getPosts()
+    .success(function(userPosts){
+      res.render("users/index", {
+        posts: userPosts,
+        message: success.message
+      });
+    })
+  }
+  db.user.createNewUser(newUser, handleError, handleSuccess)
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.get("/login", function(req, res){
       res.render('site/login');
 });
